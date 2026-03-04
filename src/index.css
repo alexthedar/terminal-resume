@@ -1,0 +1,28 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --terminal-green: #00ff41;
+  --terminal-green-dim: #00cc33;
+  --terminal-green-dark: #00802b;
+  --terminal-bg: #0a0a0a;
+  --terminal-glow: rgba(0, 255, 65, 0.15);
+  --font-terminal: 'VT323', monospace;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  background-color: #000;
+  font-family: var(--font-terminal);
+  font-size: 18px;
+  color: var(--terminal-green);
+  line-height: 1.6;
+}
