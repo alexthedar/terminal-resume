@@ -2,7 +2,7 @@ import { RESUME } from '../data/resume';
 import { NavOptions } from './NavOptions';
 import type { NavOption } from '../types';
 
-const HOME_OPTIONS: NavOption[] = [
+export const HOME_OPTIONS: NavOption[] = [
   { id: 'about', label: 'about', description: 'Who I am' },
   { id: 'experience', label: 'experience', description: 'Where I\'ve worked' },
   { id: 'skills', label: 'skills', description: 'What I know' },

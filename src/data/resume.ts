@@ -111,10 +111,10 @@ Full-stack development bootcamp, 2015`,
     contact: {
       id: "contact",
       title: "CONTACT",
-      content: `GITHUB
+      content: `[G] GITHUB
 github.com/alexthedar
 
-LINKEDIN
+[L] LINKEDIN
 linkedin.com/in/alexandarcastaneda
 
 Open to interesting conversations and new opportunities.
