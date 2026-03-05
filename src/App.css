@@ -19,19 +19,18 @@
   height: 100%;
   pointer-events: none;
   z-index: 11;
-  opacity: 0;
-  background: rgba(0, 255, 65, 0.03);
-  animation: flicker 0.15s infinite;
+  background: rgba(0, 255, 65, 0.02);
+  animation: flicker 5s ease-in-out infinite;
 }
 
 @keyframes flicker {
-  0% { opacity: 0; }
-  5% { opacity: 0.5; }
-  10% { opacity: 0; }
-  15% { opacity: 0; }
-  20% { opacity: 0.2; }
-  25% { opacity: 0; }
-  100% { opacity: 0; }
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 /* ===== SCANLINE OVERLAY ===== */
@@ -94,8 +93,14 @@
 }
 
 @keyframes glow-pulse {
-  from { text-shadow: 0 0 10px var(--terminal-green); }
-  to { text-shadow: 0 0 30px var(--terminal-green), 0 0 60px var(--terminal-glow); }
+  from {
+    text-shadow: 0 0 10px var(--terminal-green);
+  }
+  to {
+    text-shadow:
+      0 0 30px var(--terminal-green),
+      0 0 60px var(--terminal-glow);
+  }
 }
 
 .home-title {
@@ -153,7 +158,9 @@
 }
 
 @keyframes blink {
-  50% { opacity: 0; }
+  50% {
+    opacity: 0;
+  }
 }
 
 /* ===== NAVIGATION BUTTONS ===== */
@@ -166,8 +173,14 @@
 }
 
 @keyframes fade-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .nav-button {

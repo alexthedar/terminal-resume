@@ -30,28 +30,28 @@ I've led teams, mentored devs, untangled legacy spaghetti, and turned chaos into
       title: "EXPERIENCE",
       content: `HINGE HEALTH — Senior Software Engineer
 Remote | Aug 2019 – May 2022 & Dec 2022 – May 2025
-- Led multiple project teams (2–4 devs) using NestJS, Redis, GraphQL, REST, React Native, Redux, and TypeScript
-- Boosted engagement 30%, reduced dev overhead, enabled same-day updates by moving business logic server-side
-- Designed a schema-driven NestJS microservice with REST APIs for product-owned UI and server-driven rendering
-- Built BFF APIs with NestJS, GraphQL, and REST. Created a motion-tracking prototype using React Native and OpenCV
-- Collaborated across backend, frontend, product, and design. Helped define company-wide spike workflows and sprint planning
+- Led multiple project teams (2–4 devs) using NestJS, GraphQL, REST, React Native, and TypeScript
+- Moved business logic server-side, boosting engagement 30% and cutting updates from weeks to same-day
+- Designed a server-driven UI microservice with NestJS and REST APIs
+- Built BFF layers with NestJS, GraphQL, & REST. Prototyped motion tracking with React Native & OpenCV 
+- Partnered cross-functionally to shape spike processes, ticket structure, and sprint planning across the org
 
 LESSEN — Senior Software Engineer
 Remote | May 2022 – Dec 2022
-- Owned full-stack delivery across a Koa + TypeScript BFF (Kafka-integrated) and a React + TypeScript web portal
+- Delivered full-stack across a Kafka-integrated Koa BFF and React web portal
 - Reduced shopping time and operational overhead by enabling managers to better coordinate gig workers
-- Built CI/CD with automated checks and release workflows to standardize deployments and reduce regressions
+- Implemented CI/CD with automated testing and release gates to stabilize deployments
 - Partnered across BFFs, backend services, frontend, and product to define API contracts and coordinate timelines
 
 MOOVEL NA — Software Engineer
 Portland, OR | Jul 2018 – Aug 2019
-- Built a React and Redux tool that ingested CSVs and used REST APIs and SQL to update client account data
+- Built a React/Redux tool to ingest CSVs and update client accounts via REST APIs and SQL
 - Cut fare change turnaround from ~1 month to 1 day by shifting control to product
 - Refactored global state to Redux for better maintainability and faster feature development
 
 JAGUAR LAND ROVER — Frontend Developer
 Portland, OR | Mar 2018 – May 2018
-- Built a React frontend for an experimental in-car touchscreen app, served via Node and deployed to cabin screens
+- Developed a React touchscreen UI for an in-vehicle app, deployed to cabin displays via Node
 - Integrated Google Maps and other APIs, collaborated with designer and product manager
 - Delivered a location-aware UX based on music, search, and context`,
       navOptions: [
