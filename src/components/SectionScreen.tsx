@@ -2,7 +2,7 @@ import { useTypewriter } from '../hooks/useTypewriter';
 import { NavOptions } from './NavOptions';
 import type { ResumeSection } from '../types';
 
-const LINK_PATTERN = /(\S+@\S+\.\S+|(?:[\w-]+\.)+[a-z]{2,}(?:\/\S*)?|\d{3}-\d{3}-\d{4})/g;
+const LINK_PATTERN = /(\S+@\S+\.\S+|(?:[\w-]+\.)+(?:com|org|net|io|dev|co)(?:\/\S*)?|\d{3}-\d{3}-\d{4})/g;
 
 function linkify(text: string) {
   const parts = text.split(LINK_PATTERN);
