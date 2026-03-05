@@ -111,17 +111,11 @@ Full-stack development bootcamp, 2015`,
     contact: {
       id: "contact",
       title: "CONTACT",
-      content: `EMAIL
-alexthedar@gmail.com
-
-GITHUB
+      content: `GITHUB
 github.com/alexthedar
 
-PHONE
-310-895-0240
-
-LOCATION
-Portland, OR
+LINKEDIN
+linkedin.com/in/alexandarcastaneda
 
 Open to interesting conversations and new opportunities.
 Don't hesitate to reach out.`,

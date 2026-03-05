@@ -100,6 +100,18 @@
   line-height: 1.8;
 }
 
+/* ===== LINKS ===== */
+.terminal-link {
+  color: var(--terminal-green);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.terminal-link:hover {
+  color: #fff;
+  text-shadow: 0 0 10px var(--terminal-green);
+}
+
 /* ===== BLINKING CURSOR ===== */
 .cursor {
   animation: blink 1s step-end infinite;
