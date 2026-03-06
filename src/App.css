@@ -342,25 +342,19 @@
   margin-bottom: 1.5rem;
 }
 
-.music-now-playing {
-  animation: fade-in 0.3s ease;
+.music-mix-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-.music-track-name {
-  font-size: 1.4rem;
-  margin-top: 1rem;
-  margin-bottom: 0.25rem;
-}
-
-.music-artist {
-  color: var(--terminal-green-dim);
-  margin-bottom: 2rem;
+.music-mix-label {
+  margin-bottom: 0.4rem;
 }
 
 .music-iframe-wrap {
   border: 1px solid var(--terminal-green-dark);
   padding: 0.5rem;
-  margin-bottom: 2rem;
   background: #000;
 }
 
