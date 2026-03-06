@@ -3,7 +3,7 @@ import type { ResumeData } from "../types";
 export const RESUME: ResumeData = {
   name: "ALEXANDAR CASTANEDA",
   title: "SENIOR ENGINEER · WEB + MOBILE · CALM FROM CHAOS",
-  tagline: "Welcome. Select an option to explore my professional profile.",
+  tagline: "Welcome. Select option and explore.",
 
   sections: {
     about: {

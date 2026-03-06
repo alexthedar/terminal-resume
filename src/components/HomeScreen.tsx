@@ -1,3 +1,4 @@
+import { useRef, useCallback } from 'react';
 import { RESUME } from '../data/resume';
 import { NavOptions } from './NavOptions';
 import type { NavOption } from '../types';
@@ -10,15 +11,50 @@ export const HOME_OPTIONS: NavOption[] = [
   { id: 'contact', label: 'contact', description: 'Get in touch' },
 ];
 
+const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
 interface HomeScreenProps {
   onNavigate: (sectionId: string) => void;
+  onOpenCommand: () => void;
+  commandMode: boolean;
+  onCloseCommand: () => void;
 }
 
-export function HomeScreen({ onNavigate }: HomeScreenProps) {
+export function HomeScreen({ onNavigate, onOpenCommand, commandMode, onCloseCommand }: HomeScreenProps) {
+  const tapCount = useRef(0);
+  const tapTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+  const handleNameClick = useCallback((e: React.MouseEvent) => {
+    if (!isTouchDevice()) return;
+    e.stopPropagation();
+
+    if (commandMode) {
+      onCloseCommand();
+      return;
+    }
+
+    tapCount.current++;
+    clearTimeout(tapTimer.current);
+    if (tapCount.current >= 3) {
+      tapCount.current = 0;
+      onOpenCommand();
+    } else {
+      tapTimer.current = setTimeout(() => {
+        tapCount.current = 0;
+      }, 600);
+    }
+  }, [onOpenCommand, commandMode, onCloseCommand]);
+
   return (
     <div className="home-screen">
-      <h1 className="home-name">{RESUME.name}</h1>
-      <p className="home-title">{RESUME.title}</p>
+      <h1 className="home-name" onClick={handleNameClick}>{RESUME.name}</h1>
+      <p className="home-title">
+        {RESUME.title.split(' · ').map((part, i, arr) => (
+          <span key={i}>
+            {part}{i < arr.length - 1 && <span className="home-title-dot"> · </span>}
+          </span>
+        ))}
+      </p>
       <p className="home-tagline">{RESUME.tagline}</p>
       <NavOptions options={HOME_OPTIONS} onSelect={onNavigate} />
     </div>

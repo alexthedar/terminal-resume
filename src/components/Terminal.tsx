@@ -3,10 +3,12 @@ import { RESUME } from '../data/resume';
 import { BootScreen } from './BootScreen';
 import { HomeScreen, HOME_OPTIONS } from './HomeScreen';
 import { SectionScreen } from './SectionScreen';
+import { CommandPrompt } from './CommandPrompt';
 
 export function Terminal() {
   const [booting, setBooting] = useState(true);
   const [currentSection, setCurrentSection] = useState<string | null>(null);
+  const [commandMode, setCommandMode] = useState(false);
   const skipRef = useRef<(() => void) | null>(null);
 
   const handleNavigate = useCallback((sectionId: string) => {
@@ -18,7 +20,7 @@ export function Terminal() {
   }, []);
 
   const handleClick = () => {
-    skipRef.current?.();
+    if (!commandMode) skipRef.current?.();
   };
 
   const section = currentSection ? RESUME.sections[currentSection] : null;
@@ -31,9 +33,16 @@ export function Terminal() {
       if (booting) return;
 
       if (e.key === 'Escape') {
-        setCurrentSection(null);
+        const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        if (commandMode && !isTouch) {
+          setCommandMode(false);
+        } else if (!commandMode) {
+          setCurrentSection(null);
+        }
         return;
       }
+
+      if (commandMode) return;
 
       // Any key skips typewriter if it's still running
       if (skipRef.current) {
@@ -53,6 +62,14 @@ export function Terminal() {
         }
       }
 
+      // Easter egg: press 0 on home page only (desktop)
+      const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      if (e.key === '0' && !currentSection && !isTouch) {
+        e.preventDefault();
+        setCommandMode(true);
+        return;
+      }
+
       const num = parseInt(e.key);
       if (num >= 1 && num <= currentOptions.length) {
         handleNavigate(currentOptions[num - 1].id);
@@ -61,7 +78,7 @@ export function Terminal() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [booting, currentOptions, section, handleNavigate]);
+  }, [booting, commandMode, currentSection, currentOptions, section, handleNavigate]);
 
   const handleBootComplete = useCallback(() => {
     setBooting(false);
@@ -74,7 +91,12 @@ export function Terminal() {
       <div className="terminal-content">
         {booting && <BootScreen onComplete={handleBootComplete} />}
 
-        {!booting && !section && <HomeScreen onNavigate={handleNavigate} />}
+        {!booting && !section && (
+          <>
+            <HomeScreen onNavigate={handleNavigate} onOpenCommand={() => setCommandMode(true)} commandMode={commandMode} onCloseCommand={() => setCommandMode(false)} />
+            {commandMode && <CommandPrompt onClose={() => setCommandMode(false)} />}
+          </>
+        )}
 
         {!booting && section && (
           <SectionScreen

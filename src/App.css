@@ -63,6 +63,12 @@
   text-shadow: 0 0 5px var(--terminal-glow);
 }
 
+@media (min-width: 601px) {
+  .terminal-content {
+    max-width: 1000px;
+  }
+}
+
 /* ===== BOOT SCREEN ===== */
 .boot-screen {
   padding-top: 4rem;
@@ -87,6 +93,7 @@
   font-size: 3rem;
   letter-spacing: 0.3em;
   text-align: center;
+  margin-right: -0.3em;
   margin-bottom: 0.5rem;
   text-shadow: 0 0 20px var(--terminal-green);
   animation: glow-pulse 2s ease-in-out infinite alternate;
@@ -108,6 +115,19 @@
   color: var(--terminal-green-dim);
   margin-bottom: 0.5rem;
   letter-spacing: 0.2em;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .home-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .home-title-dot {
+    display: none;
+  }
 }
 
 .home-tagline {
@@ -221,6 +241,70 @@
 .home-button:hover {
   color: var(--terminal-green);
   border-color: var(--terminal-green);
+}
+
+/* ===== COMMAND BAR ===== */
+.command-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-height: 40vh;
+  background: rgba(5, 5, 5, 0.95);
+  border-top: 1px solid var(--terminal-green-dark);
+  padding: 0.75rem 1rem;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  animation: slide-up 0.2s ease;
+}
+
+@keyframes slide-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.command-bar-history {
+  overflow-y: auto;
+  max-height: 30vh;
+  margin-bottom: 0.5rem;
+}
+
+.command-bar-entry {
+  margin-bottom: 0.4rem;
+}
+
+.command-bar-cmd {
+  color: var(--terminal-green);
+  display: block;
+}
+
+.command-bar-output {
+  color: var(--terminal-green-dim);
+  white-space: pre-wrap;
+  display: block;
+  line-height: 1.5;
+}
+
+.command-bar-input-row {
+  display: flex;
+  align-items: center;
+}
+
+.command-bar-prompt {
+  color: var(--terminal-green);
+  flex-shrink: 0;
+}
+
+.command-bar-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--terminal-green);
+  font-family: var(--font-terminal);
+  font-size: 1.1rem;
+  caret-color: var(--terminal-green);
 }
 
 /* ===== SCROLLBAR ===== */
