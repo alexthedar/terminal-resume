@@ -345,21 +345,63 @@
 .music-mix-list {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 0.5rem;
 }
 
-.music-mix-label {
-  margin-bottom: 0.4rem;
+.music-mix-header {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 1px solid var(--terminal-green-dark);
+  color: var(--terminal-green);
+  font-family: var(--font-terminal);
+  font-size: 1.1rem;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.music-mix-header:hover {
+  background: rgba(0, 255, 65, 0.1);
+  border-color: var(--terminal-green);
+}
+
+.music-mix-header.active {
+  border-color: var(--terminal-green);
+  background: rgba(0, 255, 65, 0.05);
+}
+
+.music-mix-tags {
+  font-size: 0.8rem;
+  color: var(--terminal-green-dark);
+  margin-top: 0.15rem;
 }
 
 .music-iframe-wrap {
+  position: relative;
   border: 1px solid var(--terminal-green-dark);
+  border-top: none;
   padding: 0.5rem;
   background: #000;
+  animation: fade-in 0.2s ease;
 }
 
 .music-iframe-wrap iframe {
   display: block;
+}
+
+.music-loading {
+  color: var(--terminal-green-dim);
+  padding: 0.5rem 0;
+  animation: blink 1s step-end infinite;
+}
+
+.music-profile-link {
+  display: block;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
 }
 
 .music-back-button {
