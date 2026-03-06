@@ -1,4 +1,4 @@
-import { useRef, useCallback } from 'react';
+import { useRef, useCallback, useState, useEffect } from 'react';
 import { RESUME } from '../data/resume';
 import { NavOptions } from './NavOptions';
 import type { NavOption } from '../types';
@@ -57,6 +57,37 @@ export function HomeScreen({ onNavigate, onOpenCommand, commandMode, onCloseComm
       </p>
       <p className="home-tagline">{RESUME.tagline}</p>
       <NavOptions options={HOME_OPTIONS} onSelect={onNavigate} />
+      <EasterEggHint onOpenCommand={onOpenCommand} commandMode={commandMode} />
     </div>
+  );
+}
+
+function EasterEggHint({ onOpenCommand, commandMode }: { onOpenCommand: () => void; commandMode: boolean }) {
+  const [showHint, setShowHint] = useState(false);
+  const isTouch = isTouchDevice();
+
+  useEffect(() => {
+    if (commandMode) {
+      setShowHint(false);
+      return;
+    }
+
+    const hintTimer = setTimeout(() => setShowHint(true), 10000);
+    const autoOpen = setTimeout(() => {
+      if (!commandMode) onOpenCommand();
+    }, 60000);
+
+    return () => {
+      clearTimeout(hintTimer);
+      clearTimeout(autoOpen);
+    };
+  }, [commandMode, onOpenCommand]);
+
+  if (!showHint || commandMode) return null;
+
+  return (
+    <p className="easter-egg-hint">
+      {isTouch ? 'triple tap the name...' : 'press 0...'}
+    </p>
   );
 }

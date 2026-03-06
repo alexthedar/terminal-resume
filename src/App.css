@@ -89,6 +89,17 @@
   min-height: 80vh;
 }
 
+.easter-egg-hint {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: var(--terminal-green-dark);
+  font-size: 0.8rem;
+  animation: fade-in 1s ease;
+}
+
 .home-name {
   font-size: 3rem;
   letter-spacing: 0.3em;
