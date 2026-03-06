@@ -320,3 +320,66 @@
   background: var(--terminal-green-dark);
   border-radius: 3px;
 }
+
+/* ===== MUSIC PLAYER ===== */
+.music-player {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--terminal-bg);
+  z-index: 30;
+  overflow-y: auto;
+}
+
+.music-player .terminal-content {
+  padding-top: 4rem;
+}
+
+.music-subtitle {
+  color: var(--terminal-green-dim);
+  margin-bottom: 1.5rem;
+}
+
+.music-now-playing {
+  animation: fade-in 0.3s ease;
+}
+
+.music-track-name {
+  font-size: 1.4rem;
+  margin-top: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.music-artist {
+  color: var(--terminal-green-dim);
+  margin-bottom: 2rem;
+}
+
+.music-iframe-wrap {
+  border: 1px solid var(--terminal-green-dark);
+  padding: 0.5rem;
+  margin-bottom: 2rem;
+  background: #000;
+}
+
+.music-iframe-wrap iframe {
+  display: block;
+}
+
+.music-back-button {
+  background: transparent;
+  border: 1px solid var(--terminal-green-dark);
+  color: var(--terminal-green-dark);
+  font-family: var(--font-terminal);
+  font-size: 0.9rem;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  margin-top: 1.5rem;
+}
+
+.music-back-button:hover {
+  color: var(--terminal-green);
+  border-color: var(--terminal-green);
+}

@@ -10,6 +10,7 @@ snake  — Play a game of snake`,
 
 interface CommandPromptProps {
   onClose: () => void;
+  onMusic: () => void;
 }
 
 interface HistoryEntry {
@@ -17,7 +18,7 @@ interface HistoryEntry {
   output: string;
 }
 
-export function CommandPrompt({ onClose }: CommandPromptProps) {
+export function CommandPrompt({ onClose, onMusic }: CommandPromptProps) {
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<HistoryEntry[]>([
     { command: "", output: 'type "help" for commands' },
@@ -49,6 +50,11 @@ export function CommandPrompt({ onClose }: CommandPromptProps) {
 
     if (cmd === "clear") {
       setHistory([]);
+      return;
+    }
+
+    if (cmd === "music") {
+      onMusic();
       return;
     }
 

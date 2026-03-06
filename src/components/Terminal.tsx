@@ -4,11 +4,13 @@ import { BootScreen } from './BootScreen';
 import { HomeScreen, HOME_OPTIONS } from './HomeScreen';
 import { SectionScreen } from './SectionScreen';
 import { CommandPrompt } from './CommandPrompt';
+import { MusicPlayer } from './MusicPlayer';
 
 export function Terminal() {
   const [booting, setBooting] = useState(true);
   const [currentSection, setCurrentSection] = useState<string | null>(null);
   const [commandMode, setCommandMode] = useState(false);
+  const [musicMode, setMusicMode] = useState(false);
   const skipRef = useRef<(() => void) | null>(null);
 
   const handleNavigate = useCallback((sectionId: string) => {
@@ -94,7 +96,7 @@ export function Terminal() {
         {!booting && !section && (
           <>
             <HomeScreen onNavigate={handleNavigate} onOpenCommand={() => setCommandMode(true)} commandMode={commandMode} onCloseCommand={() => setCommandMode(false)} />
-            {commandMode && <CommandPrompt onClose={() => setCommandMode(false)} />}
+            {commandMode && <CommandPrompt onClose={() => setCommandMode(false)} onMusic={() => { setCommandMode(false); setMusicMode(true); }} />}
           </>
         )}
 
@@ -113,6 +115,8 @@ export function Terminal() {
           </button>
         )}
       </div>
+
+      {musicMode && <MusicPlayer onClose={() => setMusicMode(false)} />}
     </div>
   );
 }
