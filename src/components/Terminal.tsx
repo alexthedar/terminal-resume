@@ -5,12 +5,14 @@ import { HomeScreen, HOME_OPTIONS } from './HomeScreen';
 import { SectionScreen } from './SectionScreen';
 import { CommandPrompt } from './CommandPrompt';
 import { MusicPlayer } from './MusicPlayer';
+import { SnakeGame } from './SnakeGame';
 
 export function Terminal() {
   const [booting, setBooting] = useState(true);
   const [currentSection, setCurrentSection] = useState<string | null>(null);
   const [commandMode, setCommandMode] = useState(false);
   const [musicMode, setMusicMode] = useState(false);
+  const [snakeMode, setSnakeMode] = useState(false);
   const skipRef = useRef<(() => void) | null>(null);
 
   const handleNavigate = useCallback((sectionId: string) => {
@@ -96,7 +98,7 @@ export function Terminal() {
         {!booting && !section && (
           <>
             <HomeScreen onNavigate={handleNavigate} onOpenCommand={() => setCommandMode(true)} commandMode={commandMode} onCloseCommand={() => setCommandMode(false)} />
-            {commandMode && <CommandPrompt onClose={() => setCommandMode(false)} onMusic={() => { setCommandMode(false); setMusicMode(true); }} />}
+            {commandMode && <CommandPrompt onClose={() => setCommandMode(false)} onMusic={() => { setCommandMode(false); setMusicMode(true); }} onSnake={() => { setCommandMode(false); setSnakeMode(true); }} />}
           </>
         )}
 
@@ -117,6 +119,7 @@ export function Terminal() {
       </div>
 
       {musicMode && <MusicPlayer onClose={() => setMusicMode(false)} />}
+      {snakeMode && <SnakeGame onClose={() => setSnakeMode(false)} />}
     </div>
   );
 }
