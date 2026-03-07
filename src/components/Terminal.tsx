@@ -100,7 +100,7 @@ export function Terminal() {
         {!booting && !section && (
           <>
             <HomeScreen onNavigate={handleNavigate} onOpenCommand={() => setCommandMode(true)} commandMode={commandMode} onCloseCommand={() => setCommandMode(false)} />
-            {commandMode && <CommandPrompt onClose={() => setCommandMode(false)} onMusic={() => { setCommandMode(false); setMusicMode(true); }} onSnake={() => { setCommandMode(false); setSnakeMode(true); }} onMatrix={() => { setCommandMode(false); setMatrixMode(true); }} />}
+            {commandMode && <CommandPrompt onClose={() => setCommandMode(false)} onMusic={() => { setCommandMode(false); setMusicMode(true); }} onSnake={() => { setCommandMode(false); setSnakeMode(true); }} onMatrix={() => { setCommandMode(false); setMatrixMode(true); }} onNavigate={handleNavigate} />}
           </>
         )}
 

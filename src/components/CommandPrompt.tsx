@@ -1,19 +1,23 @@
 import { useState, useRef, useEffect } from "react";
+import { RESUME } from "../data/resume";
 
-const COMMANDS: Record<string, string> = {
-  help: `help   — Show available commands
+const SECTIONS = Object.keys(RESUME.sections);
+
+const HELP_TEXT = `help   — Show available commands
+ls     — List sections
+cd     — Navigate to a section
 music  — Play some tunes
 snake  — Play a game of snake
-matrix — Enter the matrix`,
-  music: `Coming soon...`,
-  snake: `Coming soon...`,
-};
+matrix — Enter the matrix
+clear  — Clear the screen
+exit   — Close prompt`;
 
 interface CommandPromptProps {
   onClose: () => void;
   onMusic: () => void;
   onSnake: () => void;
   onMatrix: () => void;
+  onNavigate: (sectionId: string) => void;
 }
 
 interface HistoryEntry {
@@ -21,7 +25,7 @@ interface HistoryEntry {
   output: string;
 }
 
-export function CommandPrompt({ onClose, onMusic, onSnake, onMatrix }: CommandPromptProps) {
+export function CommandPrompt({ onClose, onMusic, onSnake, onMatrix, onNavigate }: CommandPromptProps) {
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<HistoryEntry[]>([
     { command: "", output: 'type "help" for commands' },
@@ -39,41 +43,75 @@ export function CommandPrompt({ onClose, onMusic, onSnake, onMatrix }: CommandPr
     }
   }, [history]);
 
+  const addOutput = (command: string, output: string) => {
+    setHistory((prev) => [...prev, { command, output }]);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const cmd = input.trim().toLowerCase();
+    const raw = input.trim().toLowerCase();
     setInput("");
 
-    if (!cmd) return;
+    if (!raw) return;
 
-    if (cmd === "exit" || cmd === "quit" || cmd === "back") {
+    if (raw === "exit" || raw === "quit" || raw === "back") {
       onClose();
       return;
     }
 
-    if (cmd === "clear") {
+    if (raw === "clear") {
       setHistory([]);
       return;
     }
 
-    if (cmd === "music") {
+    if (raw === "help") {
+      addOutput(raw, HELP_TEXT);
+      return;
+    }
+
+    if (raw === "music") {
       onMusic();
       return;
     }
 
-    if (cmd === "snake") {
+    if (raw === "snake") {
       onSnake();
       return;
     }
 
-    if (cmd === "matrix") {
+    if (raw === "matrix") {
       onMatrix();
       return;
     }
 
-    const output =
-      COMMANDS[cmd] ?? `Unknown command: ${cmd}. Type "help" for options.`;
-    setHistory((prev) => [...prev, { command: cmd, output }]);
+    if (raw === "ls") {
+      const listing = SECTIONS.map((s) => `  ${s}/`).join("\n");
+      addOutput(raw, listing);
+      return;
+    }
+
+    if (raw.startsWith("cd ")) {
+      const target = raw.slice(3).trim().replace(/\/$/, "");
+      if (target === ".." || target === "~" || target === "home") {
+        onClose();
+        onNavigate("home");
+        return;
+      }
+      if (SECTIONS.includes(target)) {
+        onClose();
+        onNavigate(target);
+        return;
+      }
+      addOutput(raw, `cd: no such directory: ${target}`);
+      return;
+    }
+
+    if (raw === "cd") {
+      addOutput(raw, `usage: cd <section>\nsections: ${SECTIONS.join(", ")}`);
+      return;
+    }
+
+    addOutput(raw, `Unknown command: ${raw}. Type "help" for options.`);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
