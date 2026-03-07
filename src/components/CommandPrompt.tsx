@@ -3,7 +3,8 @@ import { useState, useRef, useEffect } from "react";
 const COMMANDS: Record<string, string> = {
   help: `help   — Show available commands
 music  — Play some tunes
-snake  — Play a game of snake`,
+snake  — Play a game of snake
+matrix — Enter the matrix`,
   music: `Coming soon...`,
   snake: `Coming soon...`,
 };
@@ -12,6 +13,7 @@ interface CommandPromptProps {
   onClose: () => void;
   onMusic: () => void;
   onSnake: () => void;
+  onMatrix: () => void;
 }
 
 interface HistoryEntry {
@@ -19,7 +21,7 @@ interface HistoryEntry {
   output: string;
 }
 
-export function CommandPrompt({ onClose, onMusic, onSnake }: CommandPromptProps) {
+export function CommandPrompt({ onClose, onMusic, onSnake, onMatrix }: CommandPromptProps) {
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<HistoryEntry[]>([
     { command: "", output: 'type "help" for commands' },
@@ -61,6 +63,11 @@ export function CommandPrompt({ onClose, onMusic, onSnake }: CommandPromptProps)
 
     if (cmd === "snake") {
       onSnake();
+      return;
+    }
+
+    if (cmd === "matrix") {
+      onMatrix();
       return;
     }
 

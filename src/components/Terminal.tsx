@@ -6,6 +6,7 @@ import { SectionScreen } from './SectionScreen';
 import { CommandPrompt } from './CommandPrompt';
 import { MusicPlayer } from './MusicPlayer';
 import { SnakeGame } from './SnakeGame';
+import { MatrixRain } from './MatrixRain';
 
 export function Terminal() {
   const [booting, setBooting] = useState(true);
@@ -13,6 +14,7 @@ export function Terminal() {
   const [commandMode, setCommandMode] = useState(false);
   const [musicMode, setMusicMode] = useState(false);
   const [snakeMode, setSnakeMode] = useState(false);
+  const [matrixMode, setMatrixMode] = useState(false);
   const skipRef = useRef<(() => void) | null>(null);
 
   const handleNavigate = useCallback((sectionId: string) => {
@@ -98,7 +100,7 @@ export function Terminal() {
         {!booting && !section && (
           <>
             <HomeScreen onNavigate={handleNavigate} onOpenCommand={() => setCommandMode(true)} commandMode={commandMode} onCloseCommand={() => setCommandMode(false)} />
-            {commandMode && <CommandPrompt onClose={() => setCommandMode(false)} onMusic={() => { setCommandMode(false); setMusicMode(true); }} onSnake={() => { setCommandMode(false); setSnakeMode(true); }} />}
+            {commandMode && <CommandPrompt onClose={() => setCommandMode(false)} onMusic={() => { setCommandMode(false); setMusicMode(true); }} onSnake={() => { setCommandMode(false); setSnakeMode(true); }} onMatrix={() => { setCommandMode(false); setMatrixMode(true); }} />}
           </>
         )}
 
@@ -120,6 +122,7 @@ export function Terminal() {
 
       {musicMode && <MusicPlayer onClose={() => setMusicMode(false)} />}
       {snakeMode && <SnakeGame onClose={() => setSnakeMode(false)} />}
+      {matrixMode && <MatrixRain onClose={() => setMatrixMode(false)} />}
     </div>
   );
 }
