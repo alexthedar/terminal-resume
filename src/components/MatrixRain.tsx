@@ -8,20 +8,19 @@ const TICK_MS = 50;
 
 const PHRASES = [
   "REACT",
+  "REACT-NATIVE",
   "TYPESCRIPT",
-  "NODE.JS",
-  "GRAPHQL",
-  "FULL STACK",
+  "NODEJS",
+  "NESTJS",
+  "KOAJS",
   "SENIOR ENGINEER",
   "JAVASCRIPT",
   "ALEXANDAR CASTANEDA",
-  "UCLA",
-  "CSS",
-  "HTML",
-  "GIT",
-  "POSTGRESQL",
-  "REDIS",
-  "AGILE",
+  "CALM FROM CHAOS",
+  "WEB",
+  "MOBILE",
+  "CLAUDE",
+  "REDUX",
 ];
 
 const SPAWN_INTERVAL_MS = 5000;
@@ -115,8 +114,9 @@ export function MatrixRain({ onClose }: MatrixRainProps) {
         const maxCol = columns - text.length;
         if (maxCol > 0) {
           const startCol = Math.floor(Math.random() * maxCol);
-          const targetRow =
-            Math.floor(rows * 0.15 + Math.random() * rows * 0.65);
+          const targetRow = Math.floor(
+            rows * 0.15 + Math.random() * rows * 0.65,
+          );
 
           // Randomize the order letters arrive so it looks organic
           const fallOrder = text.split("").map((_, i) => i);
@@ -131,7 +131,8 @@ export function MatrixRain({ onClose }: MatrixRainProps) {
             targetRow,
             phase: "falling" as LetterPhase,
             // Stagger based on random order, not left-to-right
-            dropRow: -3 - fallOrder.indexOf(c) * Math.floor(targetRow * 0.4 + 4),
+            dropRow:
+              -3 - fallOrder.indexOf(c) * Math.floor(targetRow * 0.4 + 4),
           }));
 
           words.push({ letters, holdTimer: 0, eraseStarted: false });
@@ -141,9 +142,7 @@ export function MatrixRain({ onClose }: MatrixRainProps) {
       // Animate words
       for (let w = words.length - 1; w >= 0; w--) {
         const word = words[w];
-        const allDeposited = word.letters.every(
-          (l) => l.phase !== "falling",
-        );
+        const allDeposited = word.letters.every((l) => l.phase !== "falling");
         const allDone = word.letters.every((l) => l.phase === "done");
 
         if (allDone) {
