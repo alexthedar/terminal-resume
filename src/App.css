@@ -704,6 +704,21 @@
   text-shadow: 0 0 8px rgba(0, 255, 65, 0.8);
 }
 
+.ttt-cell.ai-last {
+  animation: ai-pulse 1.5s ease-out;
+}
+
+@keyframes ai-pulse {
+  0%, 20% {
+    background: rgba(0, 255, 65, 0.3);
+    text-shadow: 0 0 10px rgba(0, 255, 65, 0.8);
+  }
+  100% {
+    background: transparent;
+    text-shadow: none;
+  }
+}
+
 .ttt-arrows {
   display: none;
   flex-direction: column;

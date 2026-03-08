@@ -100,11 +100,20 @@ export function TicTacToe3D({ onClose }: TicTacToe3DProps) {
   const [rotX, setRotX] = useState(-20);
   const [rotY, setRotY] = useState(-30);
   const [animating, setAnimating] = useState(false);
+  const [aiMove, setAiMove] = useState<{ face: number; cell: number } | null>(null);
 
   const dragging = useRef(false);
   const moved = useRef(false);
   const startPos = useRef({ x: 0, y: 0 });
   const lastPos = useRef({ x: 0, y: 0 });
+
+  // Clear AI move highlight after delay
+  useEffect(() => {
+    if (aiMove) {
+      const timer = setTimeout(() => setAiMove(null), 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [aiMove]);
 
   // Auto-rotate to winning face
   useEffect(() => {
@@ -144,6 +153,17 @@ export function TicTacToe3D({ onClose }: TicTacToe3DProps) {
       const ai = getAIMove(newBoards);
       if (ai) {
         newBoards[ai.face][ai.cell] = "O";
+        setAiMove({ face: ai.face, cell: ai.cell });
+
+        // Auto-rotate to AI's face if it played on a different face
+        if (ai.face !== face) {
+          const target = FACE_VIEW[ai.face];
+          setAnimating(true);
+          setRotX(target.x);
+          setRotY(target.y);
+          setTimeout(() => setAnimating(false), 800);
+        }
+
         const aiResult = checkWin(newBoards[ai.face]);
         if (aiResult?.winner === "O") {
           setBoards(newBoards);
@@ -174,6 +194,7 @@ export function TicTacToe3D({ onClose }: TicTacToe3DProps) {
     setGameOver(null);
     setWinFace(null);
     setWinLine(null);
+    setAiMove(null);
     setRotX(-20);
     setRotY(-30);
   }, []);
@@ -303,7 +324,9 @@ export function TicTacToe3D({ onClose }: TicTacToe3DProps) {
                 ? "CPU WINS!"
                 : gameOver === "draw"
                   ? "DRAW!"
-                  : "YOUR TURN (X)"}
+                  : aiMove
+                    ? `CPU PLAYED FACE ${aiMove.face + 1}`
+                    : "YOUR TURN (X)"}
           </span>
         </div>
 
@@ -326,7 +349,7 @@ export function TicTacToe3D({ onClose }: TicTacToe3DProps) {
                   {board.map((cell, ci) => (
                     <div
                       key={ci}
-                      className={`ttt-cell${cell === "X" ? " x" : cell === "O" ? " o" : ""}${winFace === fi && winLine?.includes(ci) ? " win" : ""}${!cell && !gameOver ? " playable" : ""}`}
+                      className={`ttt-cell${cell === "X" ? " x" : cell === "O" ? " o" : ""}${winFace === fi && winLine?.includes(ci) ? " win" : ""}${aiMove?.face === fi && aiMove?.cell === ci ? " ai-last" : ""}${!cell && !gameOver ? " playable" : ""}`}
                       data-face={fi}
                       data-cell={ci}
                     >
