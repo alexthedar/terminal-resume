@@ -678,18 +678,20 @@
   color: var(--terminal-green);
   font-family: var(--font-terminal);
   font-size: clamp(0.9rem, 3.5vmin, 1.4rem);
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
-  margin: 0;
   line-height: 1;
-  outline: none;
 }
 
-.ttt-cell:not(:disabled):hover {
-  background: rgba(0, 255, 65, 0.08);
+.ttt-cell.playable {
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  .ttt-cell.playable:hover {
+    background: rgba(0, 255, 65, 0.08);
+  }
 }
 
 .ttt-cell.o {

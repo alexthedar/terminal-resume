@@ -178,34 +178,64 @@ export function TicTacToe3D({ onClose }: TicTacToe3DProps) {
     setRotY(-30);
   }, []);
 
-  const handlePointerDown = useCallback((e: React.PointerEvent) => {
-    dragging.current = true;
-    moved.current = false;
-    startPos.current = { x: e.clientX, y: e.clientY };
-    lastPos.current = { x: e.clientX, y: e.clientY };
-  }, []);
+  const tapTarget = useRef<{ face: number; cell: number } | null>(null);
 
-  const handlePointerMove = useCallback((e: React.PointerEvent) => {
-    if (!dragging.current) return;
-    const totalDx = e.clientX - startPos.current.x;
-    const totalDy = e.clientY - startPos.current.y;
-    if (!moved.current && (Math.abs(totalDx) > 5 || Math.abs(totalDy) > 5)) {
-      moved.current = true;
-    }
-    if (moved.current) {
-      const dx = e.clientX - lastPos.current.x;
-      const dy = e.clientY - lastPos.current.y;
-      setRotY((p) => p + dx * 0.5);
-      setRotX((p) => Math.max(-85, Math.min(85, p - dy * 0.5)));
-    }
-    lastPos.current = { x: e.clientX, y: e.clientY };
-  }, []);
-
-  const handlePointerUp = useCallback(() => {
-    dragging.current = false;
-  }, []);
-
+  // Use window-level listeners for reliable mobile drag
   useEffect(() => {
+    const getXY = (e: TouchEvent | MouseEvent) => {
+      if ("touches" in e) {
+        return e.touches.length > 0
+          ? { x: e.touches[0].clientX, y: e.touches[0].clientY }
+          : lastPos.current;
+      }
+      return { x: e.clientX, y: e.clientY };
+    };
+
+    const onStart = (e: TouchEvent | MouseEvent) => {
+      const pos = getXY(e);
+      dragging.current = true;
+      moved.current = false;
+      startPos.current = pos;
+      lastPos.current = pos;
+
+      const target = e.target as HTMLElement;
+      const cell = target.closest("[data-face][data-cell]");
+      if (cell) {
+        tapTarget.current = {
+          face: Number(cell.getAttribute("data-face")),
+          cell: Number(cell.getAttribute("data-cell")),
+        };
+      } else {
+        tapTarget.current = null;
+      }
+    };
+
+    const onMove = (e: TouchEvent | MouseEvent) => {
+      if (!dragging.current) return;
+      e.preventDefault();
+      const pos = getXY(e);
+      const totalDx = pos.x - startPos.current.x;
+      const totalDy = pos.y - startPos.current.y;
+      if (!moved.current && (Math.abs(totalDx) > 8 || Math.abs(totalDy) > 8)) {
+        moved.current = true;
+      }
+      if (moved.current) {
+        const dx = pos.x - lastPos.current.x;
+        const dy = pos.y - lastPos.current.y;
+        setRotY((p) => p + dx * 0.5);
+        setRotX((p) => Math.max(-85, Math.min(85, p - dy * 0.5)));
+      }
+      lastPos.current = pos;
+    };
+
+    const onEnd = () => {
+      if (!moved.current && tapTarget.current) {
+        handleCellClick(tapTarget.current.face, tapTarget.current.cell);
+      }
+      dragging.current = false;
+      tapTarget.current = null;
+    };
+
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         onClose();
@@ -228,17 +258,28 @@ export function TicTacToe3D({ onClose }: TicTacToe3DProps) {
         e.preventDefault();
       }
     };
+
+    window.addEventListener("touchstart", onStart, { passive: false });
+    window.addEventListener("touchmove", onMove, { passive: false });
+    window.addEventListener("touchend", onEnd);
+    window.addEventListener("mousedown", onStart);
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onEnd);
     window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
-  }, [onClose]);
+
+    return () => {
+      window.removeEventListener("touchstart", onStart);
+      window.removeEventListener("touchmove", onMove);
+      window.removeEventListener("touchend", onEnd);
+      window.removeEventListener("mousedown", onStart);
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onEnd);
+      window.removeEventListener("keydown", handleKey);
+    };
+  }, [onClose, handleCellClick]);
 
   return (
-    <div
-      className="ttt-game"
-      onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUp}
-    >
+    <div className="ttt-game">
       <div className="terminal-content">
         <div className="ttt-header">
           <h2 className="section-title">3D TIC-TAC-TOE</h2>
@@ -270,17 +311,14 @@ export function TicTacToe3D({ onClose }: TicTacToe3DProps) {
                 <span className="ttt-face-num">{fi + 1}</span>
                 <div className="ttt-grid">
                   {board.map((cell, ci) => (
-                    <button
+                    <div
                       key={ci}
-                      className={`ttt-cell${cell === "X" ? " x" : cell === "O" ? " o" : ""}${winFace === fi && winLine?.includes(ci) ? " win" : ""}`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleCellClick(fi, ci);
-                      }}
-                      disabled={!!cell || !!gameOver}
+                      className={`ttt-cell${cell === "X" ? " x" : cell === "O" ? " o" : ""}${winFace === fi && winLine?.includes(ci) ? " win" : ""}${!cell && !gameOver ? " playable" : ""}`}
+                      data-face={fi}
+                      data-cell={ci}
                     >
                       {cell}
-                    </button>
+                    </div>
                   ))}
                 </div>
               </div>
