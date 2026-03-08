@@ -262,6 +262,14 @@ export function TicTacToe3D({ onClose }: TicTacToe3DProps) {
           restart();
         }
       }
+      const num = parseInt(e.key);
+      if (num >= 1 && num <= 6) {
+        const target = FACE_VIEW[num - 1];
+        setAnimating(true);
+        setRotX(target.x);
+        setRotY(target.y);
+        setTimeout(() => setAnimating(false), 800);
+      }
     };
 
     window.addEventListener("touchstart", onStart, { passive: false });
