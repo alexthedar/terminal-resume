@@ -51,22 +51,23 @@ function getAsciiLines(): string[] {
 }
 
 function buildBootLines(asciiLines: string[]) {
+  const asciiStart = 1600;
   const lines: { text: string; delay: number; isAscii?: boolean }[] = [
     { text: 'BIOS v2.4.1', delay: 0 },
     { text: 'Memory test.......... OK', delay: 400 },
     { text: 'CPU check............. OK', delay: 700 },
-    { text: '', delay: 1000 },
+    { text: 'Loading profile....... OK', delay: 1100 },
+    { text: '', delay: 1400 },
     ...asciiLines.map((line, i) => ({
       text: line,
-      delay: 1100 + i * 80,
+      delay: asciiStart + i * 80,
       isAscii: true,
     })),
-    { text: '', delay: 1100 + asciiLines.length * 80 + 200 },
-    { text: 'Loading profile....... OK', delay: 1100 + asciiLines.length * 80 + 400 },
-    { text: 'Initializing terminal session...', delay: 1100 + asciiLines.length * 80 + 800 },
-    { text: '', delay: 1100 + asciiLines.length * 80 + 1400 },
+    { text: '', delay: asciiStart + asciiLines.length * 80 + 200 },
+    { text: 'Initializing terminal session...', delay: asciiStart + asciiLines.length * 80 + 400 },
+    { text: '', delay: asciiStart + asciiLines.length * 80 + 1000 },
   ];
-  const completeDelay = 1100 + asciiLines.length * 80 + 2000;
+  const completeDelay = asciiStart + asciiLines.length * 80 + 1600;
   return { lines, completeDelay };
 }
 
