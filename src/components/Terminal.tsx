@@ -11,6 +11,7 @@ import { TicTacToe3D } from './TicTacToe3D';
 
 export function Terminal() {
   const [booting, setBooting] = useState(true);
+  const [bootWaitForKey, setBootWaitForKey] = useState(false);
   const [currentSection, setCurrentSection] = useState<string | null>(null);
   const [commandMode, setCommandMode] = useState(false);
   const [musicMode, setMusicMode] = useState(false);
@@ -90,6 +91,7 @@ export function Terminal() {
 
   const handleBootComplete = useCallback(() => {
     setBooting(false);
+    setBootWaitForKey(false);
   }, []);
 
   return (
@@ -97,12 +99,12 @@ export function Terminal() {
       <div className="scanlines" />
       <div className="crt-flicker" />
       <div className="terminal-content">
-        {booting && <BootScreen onComplete={handleBootComplete} />}
+        {booting && <BootScreen key={String(bootWaitForKey)} onComplete={handleBootComplete} waitForKey={bootWaitForKey} />}
 
         {!booting && !section && (
           <>
             <HomeScreen onNavigate={handleNavigate} onOpenCommand={() => setCommandMode(true)} commandMode={commandMode} onCloseCommand={() => setCommandMode(false)} />
-            {commandMode && <CommandPrompt onClose={() => setCommandMode(false)} onMusic={() => { setCommandMode(false); setMusicMode(true); }} onSnake={() => { setCommandMode(false); setSnakeMode(true); }} onMatrix={() => { setCommandMode(false); setMatrixMode(true); }} onTTT={() => { setCommandMode(false); setTTTMode(true); }} onNavigate={handleNavigate} />}
+            {commandMode && <CommandPrompt onClose={() => setCommandMode(false)} onMusic={() => { setCommandMode(false); setMusicMode(true); }} onSnake={() => { setCommandMode(false); setSnakeMode(true); }} onMatrix={() => { setCommandMode(false); setMatrixMode(true); }} onTTT={() => { setCommandMode(false); setTTTMode(true); }} onBoot={() => { setCommandMode(false); setBootWaitForKey(true); setBooting(true); }} onNavigate={handleNavigate} />}
           </>
         )}
 
