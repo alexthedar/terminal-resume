@@ -375,7 +375,7 @@ export function TicTacToe3D({ onClose }: TicTacToe3DProps) {
               NEW GAME
             </button>
           )}
-          <button className="music-back-button" onClick={onClose}>
+          <button className="ttt-btn" onClick={onClose}>
             [ESC] BACK
           </button>
         </div>
