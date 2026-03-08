@@ -257,6 +257,11 @@ export function TicTacToe3D({ onClose }: TicTacToe3DProps) {
         setRotX((p) => Math.min(85, p + 15));
         e.preventDefault();
       }
+      if (e.key === "n" || e.key === "N") {
+        if (gameOver) {
+          restart();
+        }
+      }
     };
 
     window.addEventListener("touchstart", onStart, { passive: false });
@@ -276,7 +281,7 @@ export function TicTacToe3D({ onClose }: TicTacToe3DProps) {
       window.removeEventListener("mouseup", onEnd);
       window.removeEventListener("keydown", handleKey);
     };
-  }, [onClose, handleCellClick]);
+  }, [onClose, handleCellClick, gameOver, restart]);
 
   return (
     <div className="ttt-game">
@@ -369,10 +374,10 @@ export function TicTacToe3D({ onClose }: TicTacToe3DProps) {
           </div>
         </div>
 
-        <div className="ttt-buttons">
+        <div className={`ttt-buttons${gameOver ? "" : " single"}`}>
           {gameOver && (
             <button className="ttt-btn" onClick={restart}>
-              NEW GAME
+              [N] NEW GAME
             </button>
           )}
           <button className="ttt-btn" onClick={onClose}>

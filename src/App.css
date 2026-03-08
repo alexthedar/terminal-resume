@@ -719,9 +719,12 @@
 }
 
 .ttt-buttons {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 1rem;
-  align-items: center;
+  justify-content: center;
+  max-width: 20rem;
+  margin: 0 auto;
 }
 
 .ttt-btn {
@@ -732,6 +735,12 @@
   font-size: 0.75rem;
   padding: 0.4rem 0.8rem;
   cursor: pointer;
+  white-space: nowrap;
+}
+
+.ttt-buttons.single {
+  grid-template-columns: 1fr;
+  max-width: 10rem;
 }
 
 .ttt-btn:hover {
