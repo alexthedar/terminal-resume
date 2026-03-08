@@ -17,4 +17,5 @@
 - [ ] Print/PDF mode — `@media print` CSS that strips terminal effects and renders a clean traditional resume. Add a `[P] PRINT` nav option
 - [ ] Theme switcher — Toggle between green (P1), amber (P3), and blue phosphor themes. Just swap the CSS variables
 - [x] 3D tic-tac-toe — Play tic-tac-toe against CPU on a rotatable 3D cube with 6 boards
+- [x] Boot screen command — Hidden `boot` command in terminal prompt to replay the boot screen with ASCII art
 - [ ] Snake high score persistence — Save snake high scores to localStorage so they persist across sessions
