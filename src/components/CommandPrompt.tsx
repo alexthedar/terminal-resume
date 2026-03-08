@@ -10,7 +10,6 @@ music  — Play some tunes
 snake  — Play a game of snake
 matrix — Enter the matrix
 ttt    — 3D tic-tac-toe
-boot   — Replay boot screen
 clear  — Clear the screen
 exit   — Close prompt`;
 

@@ -6,7 +6,7 @@
 - [x] Easter egg — Hidden command or konami code that unlocks a secret section (fun facts, hobbies, a joke)
 - [ ] Ambient particles — Faint floating green dots/pixels drifting across the screen, like dust in front of a CRT
 - [ ] Glitch effect — Random screen glitches (horizontal tears, color shifts, brief static) that fire occasionally for CRT realism
-- [ ] Custom ASCII art — ASCII art banner or illustrations for section headers or the home screen
+- [x] Custom ASCII art — ASCII art banner or illustrations for section headers or the home screen
 
 ## Bigger features
 
@@ -16,4 +16,5 @@
 - [x] Matrix rain — `matrix` command that fills the screen with falling green characters that spell out resume keywords and wash them away
 - [ ] Print/PDF mode — `@media print` CSS that strips terminal effects and renders a clean traditional resume. Add a `[P] PRINT` nav option
 - [ ] Theme switcher — Toggle between green (P1), amber (P3), and blue phosphor themes. Just swap the CSS variables
+- [x] 3D tic-tac-toe — Play tic-tac-toe against CPU on a rotatable 3D cube with 6 boards
 - [ ] Snake high score persistence — Save snake high scores to localStorage so they persist across sessions
