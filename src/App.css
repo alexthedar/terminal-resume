@@ -581,3 +581,151 @@
   letter-spacing: 0.15em;
   animation: blink 1.5s step-end infinite;
 }
+
+/* ===== 3D TIC-TAC-TOE ===== */
+.ttt-game {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 50;
+  background: var(--terminal-bg);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.ttt-game .terminal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  padding: 1.5rem 1rem;
+}
+
+.ttt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+.ttt-status {
+  color: var(--terminal-green);
+  font-family: var(--font-terminal);
+  font-size: 0.8rem;
+}
+
+.ttt-scene {
+  --cube-size: clamp(140px, 32vmin, 200px);
+  --cube-half: calc(var(--cube-size) / 2);
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 800px;
+}
+
+.ttt-cube {
+  width: var(--cube-size);
+  height: var(--cube-size);
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.ttt-face {
+  position: absolute;
+  width: var(--cube-size);
+  height: var(--cube-size);
+  backface-visibility: hidden;
+  background: rgba(0, 0, 0, 0.92);
+  border: 1px solid var(--terminal-green-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8%;
+}
+
+.ttt-face.winning {
+  border-color: var(--terminal-green);
+  box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+}
+
+.ttt-face-num {
+  position: absolute;
+  top: 3px;
+  left: 5px;
+  font-size: 0.5rem;
+  color: var(--terminal-green-dark);
+  font-family: var(--font-terminal);
+  pointer-events: none;
+}
+
+.ttt-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 2px;
+  width: 100%;
+  height: 100%;
+}
+
+.ttt-cell {
+  background: transparent;
+  border: 1px solid var(--terminal-green-dark);
+  color: var(--terminal-green);
+  font-family: var(--font-terminal);
+  font-size: clamp(0.9rem, 3.5vmin, 1.4rem);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+  outline: none;
+}
+
+.ttt-cell:not(:disabled):hover {
+  background: rgba(0, 255, 65, 0.08);
+}
+
+.ttt-cell.o {
+  color: rgba(0, 255, 65, 0.45);
+}
+
+.ttt-cell.win {
+  color: #fff;
+  background: rgba(0, 255, 65, 0.15);
+  text-shadow: 0 0 8px rgba(0, 255, 65, 0.8);
+}
+
+.ttt-hint {
+  color: var(--terminal-green-dark);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.ttt-buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.ttt-btn {
+  background: transparent;
+  border: 1px solid var(--terminal-green);
+  color: var(--terminal-green);
+  font-family: var(--font-terminal);
+  font-size: 0.75rem;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+}
+
+.ttt-btn:hover {
+  background: rgba(0, 255, 65, 0.1);
+}

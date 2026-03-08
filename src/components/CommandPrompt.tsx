@@ -9,6 +9,7 @@ cd     — Navigate to a section
 music  — Play some tunes
 snake  — Play a game of snake
 matrix — Enter the matrix
+ttt    — 3D tic-tac-toe
 clear  — Clear the screen
 exit   — Close prompt`;
 
@@ -17,6 +18,7 @@ interface CommandPromptProps {
   onMusic: () => void;
   onSnake: () => void;
   onMatrix: () => void;
+  onTTT: () => void;
   onNavigate: (sectionId: string) => void;
 }
 
@@ -25,7 +27,7 @@ interface HistoryEntry {
   output: string;
 }
 
-export function CommandPrompt({ onClose, onMusic, onSnake, onMatrix, onNavigate }: CommandPromptProps) {
+export function CommandPrompt({ onClose, onMusic, onSnake, onMatrix, onTTT, onNavigate }: CommandPromptProps) {
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<HistoryEntry[]>([
     { command: "", output: 'type "help" for commands' },
@@ -81,6 +83,11 @@ export function CommandPrompt({ onClose, onMusic, onSnake, onMatrix, onNavigate 
 
     if (raw === "matrix") {
       onMatrix();
+      return;
+    }
+
+    if (raw === "ttt") {
+      onTTT();
       return;
     }
 
