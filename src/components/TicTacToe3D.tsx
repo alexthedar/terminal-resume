@@ -326,11 +326,48 @@ export function TicTacToe3D({ onClose }: TicTacToe3DProps) {
           </div>
         </div>
 
-        <p className="ttt-hint">
-          {gameOver
-            ? "PRESS NEW GAME TO PLAY AGAIN"
-            : "DRAG OR ARROWS TO ROTATE · TAP CELL TO PLAY"}
-        </p>
+        <div className="ttt-arrows">
+          <div className="snake-controls-row">
+            <button
+              className="snake-arrow"
+              onPointerDown={(e) => {
+                e.stopPropagation();
+                setRotX((p) => Math.max(-85, p - 15));
+              }}
+            >
+              ▲
+            </button>
+          </div>
+          <div className="snake-controls-row">
+            <button
+              className="snake-arrow"
+              onPointerDown={(e) => {
+                e.stopPropagation();
+                setRotY((p) => p - 15);
+              }}
+            >
+              ◀
+            </button>
+            <button
+              className="snake-arrow"
+              onPointerDown={(e) => {
+                e.stopPropagation();
+                setRotX((p) => Math.min(85, p + 15));
+              }}
+            >
+              ▼
+            </button>
+            <button
+              className="snake-arrow"
+              onPointerDown={(e) => {
+                e.stopPropagation();
+                setRotY((p) => p + 15);
+              }}
+            >
+              ▶
+            </button>
+          </div>
+        </div>
 
         <div className="ttt-buttons">
           {gameOver && (
