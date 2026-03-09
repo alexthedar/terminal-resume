@@ -10,12 +10,12 @@ import { MatrixRain } from './MatrixRain';
 import { TicTacToe3D } from './TicTacToe3D';
 
 // Pick 1-2 random glitch variants (sometimes combo)
+const GLITCH_COUNT = 6;
 function randomGlitchSet(): Set<number> {
-  const v1 = Math.floor(Math.random() * 3) + 1;
+  const v1 = Math.floor(Math.random() * GLITCH_COUNT) + 1;
   if (Math.random() < 0.3) {
-    // 30% chance of combo
-    let v2 = Math.floor(Math.random() * 3) + 1;
-    while (v2 === v1) v2 = Math.floor(Math.random() * 3) + 1;
+    let v2 = Math.floor(Math.random() * GLITCH_COUNT) + 1;
+    while (v2 === v1) v2 = Math.floor(Math.random() * GLITCH_COUNT) + 1;
     return new Set([v1, v2]);
   }
   return new Set([v1]);

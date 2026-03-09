@@ -109,19 +109,20 @@ export function CommandPrompt({ onClose, onMusic, onSnake, onMatrix, onTTT, onBo
 
     if (raw === "chaos") {
       onChaos();
+      addOutput(raw, "signal destabilized.");
       return;
     }
 
     const glitchMatch = raw.match(/^glitch\s+(\d)(\s+hold)?$/);
     if (glitchMatch) {
       const variant = parseInt(glitchMatch[1]);
-      if (variant >= 1 && variant <= 3) {
+      if (variant >= 1 && variant <= 6) {
         onGlitch(variant, !!glitchMatch[2]);
         return;
       }
     }
     if (raw === "glitch") {
-      addOutput(raw, "usage: glitch <1-3> [hold]\n  1 — horizontal jitter\n  2 — text warp\n  3 — scanline displacement");
+      addOutput(raw, "usage: glitch <1-6> [hold]\n  1 — horizontal jitter\n  2 — text warp\n  3 — scanline displacement\n  4 — roving band\n  5 — degauss wobble\n  6 — interlace flicker");
       return;
     }
 
