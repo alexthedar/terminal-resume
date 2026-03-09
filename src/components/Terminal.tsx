@@ -82,9 +82,9 @@ export function Terminal() {
         }
       }
 
-      // Easter egg: press 0 on home page only (desktop)
+      // Easter egg: press 0 to open command prompt (desktop)
       const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-      if (e.key === '0' && !currentSection && !isTouch) {
+      if (e.key === '0' && !isTouch) {
         e.preventDefault();
         setCommandMode(true);
         return;
@@ -208,11 +208,10 @@ export function Terminal() {
         {booting && <BootScreen key={String(bootWaitForKey)} onComplete={handleBootComplete} waitForKey={bootWaitForKey} />}
 
         {!booting && !section && (
-          <>
-            <HomeScreen onNavigate={handleNavigate} onOpenCommand={() => setCommandMode(true)} commandMode={commandMode} onCloseCommand={() => setCommandMode(false)} />
-            {commandMode && <CommandPrompt onClose={() => setCommandMode(false)} onMusic={() => { setCommandMode(false); setMusicMode(true); }} onSnake={() => { setCommandMode(false); setSnakeMode(true); }} onMatrix={() => { setCommandMode(false); setMatrixMode(true); }} onTTT={() => { setCommandMode(false); setTTTMode(true); }} onBoot={() => { setCommandMode(false); setBootWaitForKey(true); setBooting(true); }} onGlitch={handleGlitch} onCalm={handleCalm} onChaos={handleChaos} onNavigate={handleNavigate} />}
-          </>
+          <HomeScreen onNavigate={handleNavigate} onOpenCommand={() => setCommandMode(true)} commandMode={commandMode} onCloseCommand={() => setCommandMode(false)} />
         )}
+
+        {!booting && commandMode && <CommandPrompt onClose={() => setCommandMode(false)} onMusic={() => { setCommandMode(false); setMusicMode(true); }} onSnake={() => { setCommandMode(false); setSnakeMode(true); }} onMatrix={() => { setCommandMode(false); setMatrixMode(true); }} onTTT={() => { setCommandMode(false); setTTTMode(true); }} onBoot={() => { setCommandMode(false); setBootWaitForKey(true); setBooting(true); }} onGlitch={handleGlitch} onCalm={handleCalm} onChaos={handleChaos} onNavigate={handleNavigate} />}
 
         {!booting && section && (
           <SectionScreen
