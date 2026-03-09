@@ -9,6 +9,18 @@ import { SnakeGame } from './SnakeGame';
 import { MatrixRain } from './MatrixRain';
 import { TicTacToe3D } from './TicTacToe3D';
 
+// Pick 1-2 random glitch variants (sometimes combo)
+function randomGlitchSet(): Set<number> {
+  const v1 = Math.floor(Math.random() * 3) + 1;
+  if (Math.random() < 0.3) {
+    // 30% chance of combo
+    let v2 = Math.floor(Math.random() * 3) + 1;
+    while (v2 === v1) v2 = Math.floor(Math.random() * 3) + 1;
+    return new Set([v1, v2]);
+  }
+  return new Set([v1]);
+}
+
 export function Terminal() {
   const [booting, setBooting] = useState(true);
   const [bootWaitForKey, setBootWaitForKey] = useState(false);
@@ -18,7 +30,7 @@ export function Terminal() {
   const [snakeMode, setSnakeMode] = useState(false);
   const [matrixMode, setMatrixMode] = useState(false);
   const [tttMode, setTTTMode] = useState(false);
-  const [glitchType, setGlitchType] = useState<number>(0);
+  const [activeGlitches, setActiveGlitches] = useState<Set<number>>(new Set());
   const [glitchHold, setGlitchHold] = useState(false);
   const [chaosMode, setChaosMode] = useState(false);
   const [ambientGlitch, setAmbientGlitch] = useState(true);
@@ -27,6 +39,8 @@ export function Terminal() {
   const tearContainerRef = useRef<HTMLDivElement>(null);
   const tapCountRef = useRef(0);
   const tapTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+  const clearGlitches = useCallback(() => setActiveGlitches(new Set()), []);
 
   const handleNavigate = useCallback((sectionId: string) => {
     if (sectionId === 'home') {
@@ -68,7 +82,7 @@ export function Terminal() {
 
       if (e.key === 'Escape') {
         if (glitchHold) {
-          setGlitchType(0);
+          clearGlitches();
           setGlitchHold(false);
           return;
         }
@@ -117,15 +131,15 @@ export function Terminal() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [booting, commandMode, currentSection, currentOptions, section, handleNavigate, glitchHold]);
+  }, [booting, commandMode, currentSection, currentOptions, section, handleNavigate, glitchHold, clearGlitches]);
 
-  // Glitch 5: clone content into shifted horizontal strips
+  // Glitch 3: clone content into shifted horizontal strips
   useEffect(() => {
     const container = tearContainerRef.current;
     const content = contentRef.current;
     if (!container || !content) return;
 
-    if (glitchType !== 3) {
+    if (!activeGlitches.has(3)) {
       container.innerHTML = '';
       return;
     }
@@ -134,10 +148,10 @@ export function Terminal() {
     const count = 3 + Math.floor(Math.random() * 3);
     const strips: [number, number, number][] = [];
     for (let i = 0; i < count; i++) {
-      const top = Math.floor(Math.random() * 90) + 5; // 5-95%
-      const height = 3 + Math.floor(Math.random() * 3); // 3-5% tall
+      const top = Math.floor(Math.random() * 90) + 5;
+      const height = 3 + Math.floor(Math.random() * 3);
       const bottom = 100 - top - height;
-      const shift = (Math.random() < 0.5 ? -1 : 1) * (2 + Math.floor(Math.random() * 6)); // 2-7px
+      const shift = (Math.random() < 0.5 ? -1 : 1) * (2 + Math.floor(Math.random() * 6));
       strips.push([top, bottom, shift]);
     }
 
@@ -160,7 +174,7 @@ export function Terminal() {
     return () => {
       container.innerHTML = '';
     };
-  }, [glitchType]);
+  }, [activeGlitches]);
 
   // Ambient glitch: random glitch every 5-45s after boot
   useEffect(() => {
@@ -169,10 +183,9 @@ export function Terminal() {
     const schedule = () => {
       const delay = 5000 + Math.random() * 40000;
       timeout = setTimeout(() => {
-        const variant = Math.floor(Math.random() * 3) + 1;
-        setGlitchType(variant);
+        setActiveGlitches(randomGlitchSet());
         setGlitchHold(false);
-        setTimeout(() => setGlitchType(0), 400 + Math.random() * 400);
+        setTimeout(() => setActiveGlitches(new Set()), 400 + Math.random() * 400);
         schedule();
       }, delay);
     };
@@ -184,10 +197,9 @@ export function Terminal() {
   useEffect(() => {
     if (!chaosMode) return;
     const fire = () => {
-      const variant = Math.floor(Math.random() * 3) + 1;
-      setGlitchType(variant);
+      setActiveGlitches(randomGlitchSet());
       setGlitchHold(false);
-      setTimeout(() => setGlitchType(0), 400 + Math.random() * 400);
+      setTimeout(() => setActiveGlitches(new Set()), 400 + Math.random() * 400);
     };
     fire();
     const id = setInterval(fire, 800 + Math.random() * 1500);
@@ -195,17 +207,17 @@ export function Terminal() {
   }, [chaosMode]);
 
   const handleGlitch = useCallback((variant: number, hold: boolean) => {
-    setGlitchType(variant);
+    setActiveGlitches(new Set([variant]));
     setGlitchHold(hold);
     if (!hold) {
-      setTimeout(() => setGlitchType(0), 600);
+      setTimeout(() => setActiveGlitches(new Set()), 600);
     }
   }, []);
 
   const handleCalm = useCallback(() => {
     setChaosMode(false);
     setAmbientGlitch(false);
-    setGlitchType(0);
+    setActiveGlitches(new Set());
     setGlitchHold(false);
   }, []);
 
@@ -218,8 +230,10 @@ export function Terminal() {
     setBootWaitForKey(false);
   }, []);
 
+  const glitchClasses = [...activeGlitches].map(g => `glitch-${g}`).join(' ');
+
   return (
-    <div className={`terminal${glitchType ? ` glitch-${glitchType}` : ''}${glitchHold ? ' glitch-hold' : ''}`} onClick={handleClick}>
+    <div className={`terminal${glitchClasses ? ` ${glitchClasses}` : ''}${glitchHold ? ' glitch-hold' : ''}`} onClick={handleClick}>
       <div className="scanlines" />
       <div className="crt-flicker" />
       <div className="glitch-tear-strips" ref={tearContainerRef} />
