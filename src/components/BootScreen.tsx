@@ -116,7 +116,11 @@ export function BootScreen({ onComplete, waitForKey }: BootScreenProps) {
   return (
     <div className="boot-screen">
       {lines.slice(0, visibleLines).map((line, i) => (
-        <div key={i} className={`boot-line${line.isAscii ? ' ascii-art' : ''}`}>{line.text}</div>
+        <div
+          key={i}
+          className={`boot-line${line.isAscii ? ' ascii-art' : ''}`}
+          {...(line.isAscii ? { onClick: () => window.open('https://www.youtube.com/embed/fZ93Lijg074?autoplay=1', '_blank'), style: { cursor: 'pointer' } } : {})}
+        >{line.text}</div>
       ))}
       {visibleLines < lines.length && <span className="cursor">_</span>}
       {done && <div className="boot-line" style={{ marginTop: '1rem' }}>PRESS ENTER TO CONTINUE</div>}

@@ -11,6 +11,7 @@ snake  — Play a game of snake
 matrix — Enter the matrix
 ttt    — 3D tic-tac-toe
 calm   — Restore signal
+irl    — ???
 clear  — Clear the screen
 exit   — Close prompt`;
 
@@ -32,7 +33,18 @@ interface HistoryEntry {
   output: string;
 }
 
-export function CommandPrompt({ onClose, onMusic, onSnake, onMatrix, onTTT, onBoot, onGlitch, onCalm, onChaos, onNavigate }: CommandPromptProps) {
+export function CommandPrompt({
+  onClose,
+  onMusic,
+  onSnake,
+  onMatrix,
+  onTTT,
+  onBoot,
+  onGlitch,
+  onCalm,
+  onChaos,
+  onNavigate,
+}: CommandPromptProps) {
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<HistoryEntry[]>([
     { command: "", output: 'type "help" for commands' },
@@ -77,9 +89,20 @@ export function CommandPrompt({ onClose, onMusic, onSnake, onMatrix, onTTT, onBo
     }
 
     if (raw === "hidden") {
-      addOutput(raw, `boot   — Replay boot sequence
+      addOutput(
+        raw,
+        `boot   — Replay boot sequence
 chaos  — Destabilize signal
-glitch — Trigger a CRT glitch (1-6)`);
+glitch — Trigger a CRT glitch (1-6)`,
+      );
+      return;
+    }
+
+    if (raw === "irl") {
+      window.open(
+        "https://www.youtube.com/embed/fZ93Lijg074?autoplay=1",
+        "_blank",
+      );
       return;
     }
 
@@ -129,7 +152,10 @@ glitch — Trigger a CRT glitch (1-6)`);
       }
     }
     if (raw === "glitch") {
-      addOutput(raw, "usage: glitch <1-6> [hold]\n  1 — horizontal jitter\n  2 — text warp\n  3 — scanline displacement\n  4 — roving band\n  5 — degauss wobble\n  6 — interlace flicker");
+      addOutput(
+        raw,
+        "usage: glitch <1-6> [hold]\n  1 — horizontal jitter\n  2 — text warp\n  3 — scanline displacement\n  4 — roving band\n  5 — degauss wobble\n  6 — interlace flicker",
+      );
       return;
     }
 
