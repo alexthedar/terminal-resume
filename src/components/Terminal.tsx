@@ -25,6 +25,8 @@ export function Terminal() {
   const skipRef = useRef<(() => void) | null>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const tearContainerRef = useRef<HTMLDivElement>(null);
+  const tapCountRef = useRef(0);
+  const tapTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const handleNavigate = useCallback((sectionId: string) => {
     if (sectionId === 'home') {
@@ -35,7 +37,24 @@ export function Terminal() {
   }, []);
 
   const handleClick = () => {
-    if (!commandMode) skipRef.current?.();
+    if (commandMode) return;
+
+    // Triple-tap to open command prompt (mobile)
+    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (isTouch && !booting) {
+      tapCountRef.current++;
+      clearTimeout(tapTimerRef.current);
+      if (tapCountRef.current >= 3) {
+        tapCountRef.current = 0;
+        setCommandMode(true);
+        return;
+      }
+      tapTimerRef.current = setTimeout(() => {
+        tapCountRef.current = 0;
+      }, 600);
+    }
+
+    skipRef.current?.();
   };
 
   const section = currentSection ? RESUME.sections[currentSection] : null;

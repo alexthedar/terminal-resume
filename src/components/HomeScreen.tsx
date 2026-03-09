@@ -1,4 +1,4 @@
-import { useRef, useCallback, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { RESUME } from '../data/resume';
 import { NavOptions } from './NavOptions';
 import type { NavOption } from '../types';
@@ -20,34 +20,10 @@ interface HomeScreenProps {
   onCloseCommand: () => void;
 }
 
-export function HomeScreen({ onNavigate, onOpenCommand, commandMode, onCloseCommand }: HomeScreenProps) {
-  const tapCount = useRef(0);
-  const tapTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
-
-  const handleNameClick = useCallback((e: React.MouseEvent) => {
-    if (!isTouchDevice()) return;
-    e.stopPropagation();
-
-    if (commandMode) {
-      onCloseCommand();
-      return;
-    }
-
-    tapCount.current++;
-    clearTimeout(tapTimer.current);
-    if (tapCount.current >= 3) {
-      tapCount.current = 0;
-      onOpenCommand();
-    } else {
-      tapTimer.current = setTimeout(() => {
-        tapCount.current = 0;
-      }, 600);
-    }
-  }, [onOpenCommand, commandMode, onCloseCommand]);
-
+export function HomeScreen({ onNavigate, onOpenCommand, commandMode }: HomeScreenProps) {
   return (
     <div className="home-screen">
-      <h1 className="home-name" onClick={handleNameClick}>{RESUME.name}</h1>
+      <h1 className="home-name">{RESUME.name}</h1>
       <p className="home-title">
         {RESUME.title.split(' · ').map((part, i, arr) => (
           <span key={i}>
@@ -87,7 +63,7 @@ function EasterEggHint({ onOpenCommand, commandMode }: { onOpenCommand: () => vo
 
   return (
     <p className="easter-egg-hint">
-      {isTouch ? 'triple tap the name...' : 'press 0...'}
+      {isTouch ? 'triple tap...' : 'press 0...'}
     </p>
   );
 }
