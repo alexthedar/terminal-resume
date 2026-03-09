@@ -76,6 +76,13 @@ export function CommandPrompt({ onClose, onMusic, onSnake, onMatrix, onTTT, onBo
       return;
     }
 
+    if (raw === "hidden") {
+      addOutput(raw, `boot   — Replay boot sequence
+chaos  — Destabilize signal
+glitch — Trigger a CRT glitch (1-6)`);
+      return;
+    }
+
     if (raw === "music") {
       onMusic();
       return;
