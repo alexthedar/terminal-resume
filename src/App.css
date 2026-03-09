@@ -10,6 +10,49 @@
     0 0 40px rgba(0, 255, 65, 0.1);
 }
 
+/* ===== GLITCH EFFECT ===== */
+/* CRT glitch variants */
+
+/* Glitch 1 — horizontal jitter */
+.terminal.glitch-1 {
+  animation: crt-jitter 0.5s ease-in-out;
+}
+.terminal.glitch-1.glitch-hold {
+  animation: crt-jitter 0.5s ease-in-out infinite;
+}
+@keyframes crt-jitter {
+  0%, 100% { transform: none; }
+  15%, 25% { transform: translateX(-8px); }
+  35%, 45% { transform: translateX(6px); }
+  55%, 60% { transform: translateX(-3px); }
+  70% { transform: none; }
+}
+
+/* Glitch 2 — text warp / deflection coil */
+.terminal.glitch-2 {
+  animation: crt-warp 0.6s ease-in-out;
+}
+.terminal.glitch-2.glitch-hold {
+  animation: crt-warp 0.6s ease-in-out infinite;
+}
+@keyframes crt-warp {
+  0%, 100% { transform: none; }
+  20%, 40% { transform: skewX(2deg) scaleY(1.025); }
+  50% { transform: none; }
+  60%, 80% { transform: skewX(-1.5deg) scaleY(0.98); }
+}
+
+/* Glitch 3 — scanline displacement (cloned strips shifted horizontally) */
+.glitch-tear-strips {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
 /* ===== CRT FLICKER ===== */
 .crt-flicker {
   position: absolute;

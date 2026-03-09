@@ -10,6 +10,7 @@ music  — Play some tunes
 snake  — Play a game of snake
 matrix — Enter the matrix
 ttt    — 3D tic-tac-toe
+calm   — Restore signal
 clear  — Clear the screen
 exit   — Close prompt`;
 
@@ -20,6 +21,9 @@ interface CommandPromptProps {
   onMatrix: () => void;
   onTTT: () => void;
   onBoot: () => void;
+  onGlitch: (variant: number, hold: boolean) => void;
+  onCalm: () => void;
+  onChaos: () => void;
   onNavigate: (sectionId: string) => void;
 }
 
@@ -28,7 +32,7 @@ interface HistoryEntry {
   output: string;
 }
 
-export function CommandPrompt({ onClose, onMusic, onSnake, onMatrix, onTTT, onBoot, onNavigate }: CommandPromptProps) {
+export function CommandPrompt({ onClose, onMusic, onSnake, onMatrix, onTTT, onBoot, onGlitch, onCalm, onChaos, onNavigate }: CommandPromptProps) {
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<HistoryEntry[]>([
     { command: "", output: 'type "help" for commands' },
@@ -94,6 +98,30 @@ export function CommandPrompt({ onClose, onMusic, onSnake, onMatrix, onTTT, onBo
 
     if (raw === "boot") {
       onBoot();
+      return;
+    }
+
+    if (raw === "calm") {
+      onCalm();
+      addOutput(raw, "signal restored.");
+      return;
+    }
+
+    if (raw === "chaos") {
+      onChaos();
+      return;
+    }
+
+    const glitchMatch = raw.match(/^glitch\s+(\d)(\s+hold)?$/);
+    if (glitchMatch) {
+      const variant = parseInt(glitchMatch[1]);
+      if (variant >= 1 && variant <= 3) {
+        onGlitch(variant, !!glitchMatch[2]);
+        return;
+      }
+    }
+    if (raw === "glitch") {
+      addOutput(raw, "usage: glitch <1-3> [hold]\n  1 — horizontal jitter\n  2 — text warp\n  3 — scanline displacement");
       return;
     }
 

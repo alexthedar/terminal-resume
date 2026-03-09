@@ -18,7 +18,13 @@ export function Terminal() {
   const [snakeMode, setSnakeMode] = useState(false);
   const [matrixMode, setMatrixMode] = useState(false);
   const [tttMode, setTTTMode] = useState(false);
+  const [glitchType, setGlitchType] = useState<number>(0);
+  const [glitchHold, setGlitchHold] = useState(false);
+  const [chaosMode, setChaosMode] = useState(false);
+  const [ambientGlitch, setAmbientGlitch] = useState(true);
   const skipRef = useRef<(() => void) | null>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const tearContainerRef = useRef<HTMLDivElement>(null);
 
   const handleNavigate = useCallback((sectionId: string) => {
     if (sectionId === 'home') {
@@ -42,6 +48,11 @@ export function Terminal() {
       if (booting) return;
 
       if (e.key === 'Escape') {
+        if (glitchHold) {
+          setGlitchType(0);
+          setGlitchHold(false);
+          return;
+        }
         const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         if (commandMode && !isTouch) {
           setCommandMode(false);
@@ -87,7 +98,101 @@ export function Terminal() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [booting, commandMode, currentSection, currentOptions, section, handleNavigate]);
+  }, [booting, commandMode, currentSection, currentOptions, section, handleNavigate, glitchHold]);
+
+  // Glitch 5: clone content into shifted horizontal strips
+  useEffect(() => {
+    const container = tearContainerRef.current;
+    const content = contentRef.current;
+    if (!container || !content) return;
+
+    if (glitchType !== 3) {
+      container.innerHTML = '';
+      return;
+    }
+
+    // Generate 3-5 thin random strips (~3-5% tall each, random position and shift)
+    const count = 3 + Math.floor(Math.random() * 3);
+    const strips: [number, number, number][] = [];
+    for (let i = 0; i < count; i++) {
+      const top = Math.floor(Math.random() * 90) + 5; // 5-95%
+      const height = 3 + Math.floor(Math.random() * 3); // 3-5% tall
+      const bottom = 100 - top - height;
+      const shift = (Math.random() < 0.5 ? -1 : 1) * (2 + Math.floor(Math.random() * 6)); // 2-7px
+      strips.push([top, bottom, shift]);
+    }
+
+    container.innerHTML = '';
+    for (const [top, bottom, shift] of strips) {
+      const clone = content.cloneNode(true) as HTMLElement;
+      clone.style.position = 'absolute';
+      clone.style.top = '0';
+      clone.style.left = '0';
+      clone.style.right = '0';
+      clone.style.bottom = '0';
+      clone.style.clipPath = `inset(${top}% 0 ${bottom}% 0)`;
+      clone.style.transform = `translateX(${shift}px)`;
+      clone.style.pointerEvents = 'none';
+      clone.style.zIndex = '3';
+      clone.setAttribute('aria-hidden', 'true');
+      container.appendChild(clone);
+    }
+
+    return () => {
+      container.innerHTML = '';
+    };
+  }, [glitchType]);
+
+  // Ambient glitch: random glitch every 5-45s after boot
+  useEffect(() => {
+    if (booting || !ambientGlitch || chaosMode) return;
+    let timeout: ReturnType<typeof setTimeout>;
+    const schedule = () => {
+      const delay = 5000 + Math.random() * 40000;
+      timeout = setTimeout(() => {
+        const variant = Math.floor(Math.random() * 3) + 1;
+        setGlitchType(variant);
+        setGlitchHold(false);
+        setTimeout(() => setGlitchType(0), 400 + Math.random() * 400);
+        schedule();
+      }, delay);
+    };
+    schedule();
+    return () => clearTimeout(timeout);
+  }, [booting, ambientGlitch, chaosMode]);
+
+  // Chaos mode: rapidly cycle through glitch variants
+  useEffect(() => {
+    if (!chaosMode) return;
+    const fire = () => {
+      const variant = Math.floor(Math.random() * 3) + 1;
+      setGlitchType(variant);
+      setGlitchHold(false);
+      setTimeout(() => setGlitchType(0), 400 + Math.random() * 400);
+    };
+    fire();
+    const id = setInterval(fire, 800 + Math.random() * 1500);
+    return () => clearInterval(id);
+  }, [chaosMode]);
+
+  const handleGlitch = useCallback((variant: number, hold: boolean) => {
+    setGlitchType(variant);
+    setGlitchHold(hold);
+    if (!hold) {
+      setTimeout(() => setGlitchType(0), 600);
+    }
+  }, []);
+
+  const handleCalm = useCallback(() => {
+    setChaosMode(false);
+    setAmbientGlitch(false);
+    setGlitchType(0);
+    setGlitchHold(false);
+  }, []);
+
+  const handleChaos = useCallback(() => {
+    setChaosMode(true);
+  }, []);
 
   const handleBootComplete = useCallback(() => {
     setBooting(false);
@@ -95,16 +200,17 @@ export function Terminal() {
   }, []);
 
   return (
-    <div className="terminal" onClick={handleClick}>
+    <div className={`terminal${glitchType ? ` glitch-${glitchType}` : ''}${glitchHold ? ' glitch-hold' : ''}`} onClick={handleClick}>
       <div className="scanlines" />
       <div className="crt-flicker" />
-      <div className="terminal-content">
+      <div className="glitch-tear-strips" ref={tearContainerRef} />
+      <div className="terminal-content" ref={contentRef}>
         {booting && <BootScreen key={String(bootWaitForKey)} onComplete={handleBootComplete} waitForKey={bootWaitForKey} />}
 
         {!booting && !section && (
           <>
             <HomeScreen onNavigate={handleNavigate} onOpenCommand={() => setCommandMode(true)} commandMode={commandMode} onCloseCommand={() => setCommandMode(false)} />
-            {commandMode && <CommandPrompt onClose={() => setCommandMode(false)} onMusic={() => { setCommandMode(false); setMusicMode(true); }} onSnake={() => { setCommandMode(false); setSnakeMode(true); }} onMatrix={() => { setCommandMode(false); setMatrixMode(true); }} onTTT={() => { setCommandMode(false); setTTTMode(true); }} onBoot={() => { setCommandMode(false); setBootWaitForKey(true); setBooting(true); }} onNavigate={handleNavigate} />}
+            {commandMode && <CommandPrompt onClose={() => setCommandMode(false)} onMusic={() => { setCommandMode(false); setMusicMode(true); }} onSnake={() => { setCommandMode(false); setSnakeMode(true); }} onMatrix={() => { setCommandMode(false); setMatrixMode(true); }} onTTT={() => { setCommandMode(false); setTTTMode(true); }} onBoot={() => { setCommandMode(false); setBootWaitForKey(true); setBooting(true); }} onGlitch={handleGlitch} onCalm={handleCalm} onChaos={handleChaos} onNavigate={handleNavigate} />}
           </>
         )}
 
