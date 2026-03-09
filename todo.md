@@ -5,7 +5,7 @@
 - [ ] Typing sound — Soft keyboard click sounds during the typewriter animation with a mute toggle
 - [x] Easter egg — Hidden command or konami code that unlocks a secret section (fun facts, hobbies, a joke)
 - [ ] Ambient particles — Faint floating green dots/pixels drifting across the screen, like dust in front of a CRT
-- [ ] Glitch effect — Random screen glitches (horizontal tears, color shifts, brief static) that fire occasionally for CRT realism
+- [x] Glitch effect — Random screen glitches (horizontal tears, color shifts, brief static) that fire occasionally for CRT realism
 - [x] Custom ASCII art — ASCII art banner or illustrations for section headers or the home screen
 
 ## Bigger features
@@ -19,3 +19,4 @@
 - [x] 3D tic-tac-toe — Play tic-tac-toe against CPU on a rotatable 3D cube with 6 boards
 - [x] Boot screen command — Hidden `boot` command in terminal prompt to replay the boot screen with ASCII art
 - [ ] Snake high score persistence — Save snake high scores to localStorage so they persist across sessions
+- [x] IRL easter egg video — Click ASCII art during boot or type `irl` command to open YouTube video in new tab
