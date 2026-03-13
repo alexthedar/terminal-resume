@@ -20,3 +20,5 @@
 - [x] Boot screen command — Hidden `boot` command in terminal prompt to replay the boot screen with ASCII art
 - [ ] Snake high score persistence — Save snake high scores to localStorage so they persist across sessions
 - [x] IRL easter egg video — Click ASCII art during boot or type `irl` command to open YouTube video in new tab
+- [ ] Hidden chat room — Real-time IRC/BBS-style chat using Firebase Realtime Database. Hidden `chat` command opens a green-text chat overlay. Needs: Firebase project, nicknames, rate limiting, message length limits
+- [ ] Multiplayer MUD — Text-based multiplayer dungeon where visitors explore resume as rooms, see each other, and chat. Needs: WebSocket server, room/player state, navigation commands (look, go, say). Rooms map to resume sections with thematic descriptions
