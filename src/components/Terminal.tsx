@@ -266,6 +266,24 @@ export function Terminal() {
       {snakeMode && <SnakeGame onClose={() => setSnakeMode(false)} />}
       {matrixMode && <MatrixRain onClose={() => setMatrixMode(false)} />}
       {tttMode && <TicTacToe3D onClose={() => setTTTMode(false)} />}
+
+      {/* Print-only resume layout — hidden on screen, shown when printing */}
+      <div className="print-resume">
+        <h1>{RESUME.name}</h1>
+        <p className="print-title">{RESUME.title}</p>
+        <div className="print-contact">
+          github.com/alexthedar &nbsp;|&nbsp; linkedin.com/in/alexandarcastaneda
+        </div>
+        {['about', 'experience', 'skills', 'education'].map(id => {
+          const s = RESUME.sections[id];
+          return (
+            <div key={id} className="print-section">
+              <h2>{s.title}</h2>
+              <div className="print-content">{s.content}</div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

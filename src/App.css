@@ -891,3 +891,99 @@
 .ttt-btn:hover {
   background: rgba(0, 255, 65, 0.1);
 }
+
+/* ===== PRINT-ONLY RESUME ===== */
+.print-resume {
+  display: none;
+}
+
+@media print {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: 11pt;
+    line-height: 1.4;
+    margin: 0;
+    padding: 0;
+  }
+
+  .terminal {
+    background: white;
+    overflow: visible;
+    width: auto;
+    height: auto;
+  }
+
+  .scanlines,
+  .crt-flicker,
+  .glitch-tear-strips,
+  .terminal-content,
+  .home-button,
+  .music-overlay,
+  .snake-overlay,
+  .matrix-overlay,
+  .ttt-overlay {
+    display: none !important;
+  }
+
+  .print-resume {
+    display: block !important;
+    color: black;
+    padding: 0.5in;
+    max-width: 7.5in;
+    margin: 0 auto;
+  }
+
+  .print-resume h1 {
+    font-size: 20pt;
+    margin: 0 0 2pt;
+    color: black;
+    letter-spacing: 1pt;
+  }
+
+  .print-resume .print-title {
+    font-size: 10pt;
+    margin: 0 0 4pt;
+    color: #444;
+    letter-spacing: 0.5pt;
+  }
+
+  .print-resume .print-contact {
+    font-size: 9pt;
+    color: #555;
+    margin-bottom: 16pt;
+    padding-bottom: 8pt;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .print-resume .print-section {
+    margin-bottom: 12pt;
+  }
+
+  .print-resume h2 {
+    font-size: 12pt;
+    font-weight: bold;
+    margin: 0 0 4pt;
+    color: black;
+    border-bottom: 1px solid #999;
+    padding-bottom: 2pt;
+    text-transform: uppercase;
+    letter-spacing: 0.5pt;
+  }
+
+  .print-resume .print-content {
+    font-size: 10pt;
+    white-space: pre-wrap;
+    line-height: 1.5;
+  }
+}
