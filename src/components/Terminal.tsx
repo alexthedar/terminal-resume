@@ -8,6 +8,7 @@ import { MusicPlayer } from './MusicPlayer';
 import { SnakeGame } from './SnakeGame';
 import { MatrixRain } from './MatrixRain';
 import { TicTacToe3D } from './TicTacToe3D';
+import { ChatRoom } from './ChatRoom';
 
 // Pick 1-2 random glitch variants (sometimes combo)
 const GLITCH_COUNT = 6;
@@ -30,6 +31,7 @@ export function Terminal() {
   const [snakeMode, setSnakeMode] = useState(false);
   const [matrixMode, setMatrixMode] = useState(false);
   const [tttMode, setTTTMode] = useState(false);
+  const [chatMode, setChatMode] = useState(false);
   const [activeGlitches, setActiveGlitches] = useState<Set<number>>(new Set());
   const [glitchHold, setGlitchHold] = useState(false);
   const [chaosMode, setChaosMode] = useState(false);
@@ -244,7 +246,7 @@ export function Terminal() {
           <HomeScreen onNavigate={handleNavigate} onOpenCommand={() => setCommandMode(true)} commandMode={commandMode} onCloseCommand={() => setCommandMode(false)} />
         )}
 
-        {!booting && commandMode && <CommandPrompt onClose={() => setCommandMode(false)} onMusic={() => { setCommandMode(false); setMusicMode(true); }} onSnake={() => { setCommandMode(false); setSnakeMode(true); }} onMatrix={() => { setCommandMode(false); setMatrixMode(true); }} onTTT={() => { setCommandMode(false); setTTTMode(true); }} onBoot={() => { setCommandMode(false); setBootWaitForKey(true); setBooting(true); }} onGlitch={handleGlitch} onCalm={handleCalm} onChaos={handleChaos} onNavigate={handleNavigate} />}
+        {!booting && commandMode && <CommandPrompt onClose={() => setCommandMode(false)} onMusic={() => { setCommandMode(false); setMusicMode(true); }} onSnake={() => { setCommandMode(false); setSnakeMode(true); }} onMatrix={() => { setCommandMode(false); setMatrixMode(true); }} onTTT={() => { setCommandMode(false); setTTTMode(true); }} onChat={() => { setCommandMode(false); setChatMode(true); }} onBoot={() => { setCommandMode(false); setBootWaitForKey(true); setBooting(true); }} onGlitch={handleGlitch} onCalm={handleCalm} onChaos={handleChaos} onNavigate={handleNavigate} />}
 
         {!booting && section && (
           <SectionScreen
@@ -266,6 +268,7 @@ export function Terminal() {
       {snakeMode && <SnakeGame onClose={() => setSnakeMode(false)} />}
       {matrixMode && <MatrixRain onClose={() => setMatrixMode(false)} />}
       {tttMode && <TicTacToe3D onClose={() => setTTTMode(false)} />}
+      {chatMode && <ChatRoom onClose={() => setChatMode(false)} />}
     </div>
   );
 }

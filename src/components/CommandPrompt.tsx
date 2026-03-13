@@ -10,8 +10,9 @@ music  — Play some tunes
 snake  — Play a game of snake
 matrix — Enter the matrix
 ttt    — 3D tic-tac-toe
+chat   — Enter the chat room
 calm   — Restore signal
-irl    — ???
+irl    — Nerds Will Rise
 clear  — Clear the screen
 exit   — Close prompt`;
 
@@ -21,6 +22,7 @@ interface CommandPromptProps {
   onSnake: () => void;
   onMatrix: () => void;
   onTTT: () => void;
+  onChat: () => void;
   onBoot: () => void;
   onGlitch: (variant: number, hold: boolean) => void;
   onCalm: () => void;
@@ -39,6 +41,7 @@ export function CommandPrompt({
   onSnake,
   onMatrix,
   onTTT,
+  onChat,
   onBoot,
   onGlitch,
   onCalm,
@@ -123,6 +126,11 @@ glitch — Trigger a CRT glitch (1-6)`,
 
     if (raw === "ttt") {
       onTTT();
+      return;
+    }
+
+    if (raw === "chat") {
+      onChat();
       return;
     }
 
