@@ -21,11 +21,25 @@
   animation: crt-jitter 0.5s ease-in-out infinite;
 }
 @keyframes crt-jitter {
-  0%, 100% { transform: none; }
-  15%, 25% { transform: translateX(-8px); }
-  35%, 45% { transform: translateX(6px); }
-  55%, 60% { transform: translateX(-3px); }
-  70% { transform: none; }
+  0%,
+  100% {
+    transform: none;
+  }
+  15%,
+  25% {
+    transform: translateX(-8px);
+  }
+  35%,
+  45% {
+    transform: translateX(6px);
+  }
+  55%,
+  60% {
+    transform: translateX(-3px);
+  }
+  70% {
+    transform: none;
+  }
 }
 
 /* Glitch 2 — text warp / deflection coil */
@@ -36,10 +50,21 @@
   animation: crt-warp 1.1s ease-in-out infinite;
 }
 @keyframes crt-warp {
-  0%, 100% { transform: none; }
-  20%, 40% { transform: skewX(2deg) scaleY(1.025); }
-  50% { transform: none; }
-  60%, 80% { transform: skewX(-1.5deg) scaleY(0.98); }
+  0%,
+  100% {
+    transform: none;
+  }
+  20%,
+  40% {
+    transform: skewX(2deg) scaleY(1.025);
+  }
+  50% {
+    transform: none;
+  }
+  60%,
+  80% {
+    transform: skewX(-1.5deg) scaleY(0.98);
+  }
 }
 
 /* Glitch 3 — scanline displacement (cloned strips shifted horizontally) */
@@ -55,7 +80,7 @@
 
 /* Glitch 4 — roving bright band (50/60Hz interference) */
 .terminal.glitch-4::after {
-  content: '';
+  content: "";
   position: fixed;
   left: 0;
   width: 100%;
@@ -78,8 +103,12 @@
   animation: crt-rove 2.5s linear infinite;
 }
 @keyframes crt-rove {
-  0% { top: -15vh; }
-  100% { top: 100vh; }
+  0% {
+    top: -15vh;
+  }
+  100% {
+    top: 100vh;
+  }
 }
 
 /* Glitch 5 — degauss wobble */
@@ -90,21 +119,51 @@
   animation: crt-degauss 0.6s ease-out infinite;
 }
 @keyframes crt-degauss {
-  0% { transform: none; filter: brightness(1); }
-  5% { transform: translate(-3px, 2px) rotate(-0.5deg); filter: brightness(1.4); }
-  10% { transform: translate(4px, -1px) rotate(0.3deg); filter: brightness(1.3); }
-  15% { transform: translate(-2px, -3px) rotate(-0.4deg); filter: brightness(1.5); }
-  20% { transform: translate(3px, 1px) rotate(0.2deg); filter: brightness(1.2); }
-  30% { transform: translate(-1px, 2px) rotate(-0.2deg); filter: brightness(1.3); }
-  40% { transform: translate(2px, -1px) rotate(0.1deg); filter: brightness(1.1); }
-  55% { transform: translate(-1px, 0) rotate(0deg); filter: brightness(1.05); }
-  70% { transform: translate(0, 1px); filter: brightness(1); }
-  100% { transform: none; filter: none; }
+  0% {
+    transform: none;
+    filter: brightness(1);
+  }
+  5% {
+    transform: translate(-3px, 2px) rotate(-0.5deg);
+    filter: brightness(1.4);
+  }
+  10% {
+    transform: translate(4px, -1px) rotate(0.3deg);
+    filter: brightness(1.3);
+  }
+  15% {
+    transform: translate(-2px, -3px) rotate(-0.4deg);
+    filter: brightness(1.5);
+  }
+  20% {
+    transform: translate(3px, 1px) rotate(0.2deg);
+    filter: brightness(1.2);
+  }
+  30% {
+    transform: translate(-1px, 2px) rotate(-0.2deg);
+    filter: brightness(1.3);
+  }
+  40% {
+    transform: translate(2px, -1px) rotate(0.1deg);
+    filter: brightness(1.1);
+  }
+  55% {
+    transform: translate(-1px, 0) rotate(0deg);
+    filter: brightness(1.05);
+  }
+  70% {
+    transform: translate(0, 1px);
+    filter: brightness(1);
+  }
+  100% {
+    transform: none;
+    filter: none;
+  }
 }
 
 /* Glitch 6 — interlace flicker (every-other-line shimmer) */
 .terminal.glitch-6::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   width: 100%;
@@ -125,10 +184,24 @@
   animation: crt-interlace 0.5s ease-in-out infinite;
 }
 @keyframes crt-interlace {
-  0%, 100% { opacity: 0; transform: none; }
-  15%, 45% { opacity: 1; transform: translateY(1px); }
-  50% { opacity: 0; }
-  55%, 85% { opacity: 1; transform: translateY(-1px); }
+  0%,
+  100% {
+    opacity: 0;
+    transform: none;
+  }
+  15%,
+  45% {
+    opacity: 1;
+    transform: translateY(1px);
+  }
+  50% {
+    opacity: 0;
+  }
+  55%,
+  85% {
+    opacity: 1;
+    transform: translateY(-1px);
+  }
 }
 
 /* ===== CRT FLICKER ===== */
@@ -225,9 +298,24 @@
   left: 0;
   right: 0;
   text-align: center;
-  color: var(--terminal-green-dark);
   font-size: 0.8rem;
-  animation: fade-in 1s ease;
+  color: rgba(0, 180, 45, 0.25);
+  text-shadow:
+    0 0 8px rgba(0, 180, 45, 0.2),
+    0 0 25px rgba(0, 150, 30, 0.12),
+    0 0 50px rgba(0, 130, 25, 0.06);
+  letter-spacing: 0.15em;
+  filter: blur(0.4px);
+  animation: burn-in 4s ease-out forwards;
+}
+
+@keyframes burn-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .home-name {
@@ -401,8 +489,12 @@
 }
 
 @keyframes slide-up {
-  from { transform: translateY(100%); }
-  to { transform: translateY(0); }
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 
 .command-bar-history {
@@ -839,7 +931,8 @@
 }
 
 @keyframes ai-pulse {
-  0%, 20% {
+  0%,
+  20% {
     background: rgba(0, 255, 65, 0.3);
     text-shadow: 0 0 10px rgba(0, 255, 65, 0.8);
   }
